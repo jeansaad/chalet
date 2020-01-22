@@ -6,4 +6,4 @@ script:
   - npm run build
   - npm test
 after_success:
-  - npm run coverage:coveralls
+  - ./scripts/run-on-node-version.sh latest "npm run coverage:coveralls"
