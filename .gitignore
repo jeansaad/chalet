@@ -4,3 +4,5 @@ node_modules
 lib
 dist
 static
+coverage
+.nyc_output

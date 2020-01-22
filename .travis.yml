@@ -5,3 +5,5 @@ node_js:
 script:
   - npm run build
   - npm test
+after_success:
+  - npm run coverage:coveralls
