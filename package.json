@@ -1,7 +1,7 @@
 {
   "name": "hotel",
   "version": "0.8.7",
-  "description": "Local domains for everyone and more! ",
+  "description": "Local domains for everyone and more!",
   "main": "lib",
   "bin": "lib/cli/bin.js",
   "engines": {
