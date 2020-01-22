@@ -9,7 +9,6 @@
   },
   "scripts": {
     "test": "nyc --reporter=lcov ava && npm run lint",
-    "coverage": "nyc report",
     "coverage:coveralls": "nyc report --reporter=text-lcov | coveralls",
     "lint": "eslint . --ignore-path .gitignore && stylelint './src/app/**/*.css'",
     "fix": "eslint . --ignore-path .gitignore --fix && stylelint './src/app/**/*.css' --fix",
