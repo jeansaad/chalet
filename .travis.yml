@@ -17,4 +17,4 @@ after_script:
 after_success:
   - ./scripts/run-on-node-version.sh latest "npm run coverage:coveralls"
   - ./scripts/run-on-node-version.sh latest "codecov"
-  - ./scripts/run-on-node-version.sh latest "nyc report --reporter=text-lcov | ./node_modules/.bin/codacy-coverage"
+  - ./scripts/run-on-node-version.sh latest "nyc report --reporter=text-lcov | codacy-coverage"
