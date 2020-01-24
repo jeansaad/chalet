@@ -3,6 +3,7 @@ node_js:
   - "stable"
 install:
   - npm install -g codecov
+  - npm install -g codacy-coverage
   - npm install
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
@@ -16,3 +17,4 @@ after_script:
 after_success:
   - ./scripts/run-on-node-version.sh latest "npm run coverage:coveralls"
   - ./scripts/run-on-node-version.sh latest "codecov"
+  - ./scripts/run-on-node-version.sh latest "nyc report --reporter=text-lcov | ./node_modules/.bin/codacy-coverage"
