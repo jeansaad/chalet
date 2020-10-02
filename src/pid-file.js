@@ -2,24 +2,24 @@ const fs = require("fs");
 const { pidFile } = require("./common");
 
 module.exports = {
-    create,
-    read,
-    remove,
+  create,
+  read,
+  remove
 };
 
 function create() {
-    console.log("create", pidFile, process.pid);
-    return fs.writeFileSync(pidFile, process.pid.toString());
+  console.log("create", pidFile, process.pid);
+  return fs.writeFileSync(pidFile, process.pid.toString());
 }
 
 function read() {
-    if (fs.existsSync(pidFile)) {
-        return fs.readFileSync(pidFile, "utf-8");
-    }
+  if (fs.existsSync(pidFile)) {
+    return fs.readFileSync(pidFile, "utf-8");
+  }
 }
 
 function remove() {
-    if (fs.existsSync(pidFile)) {
-        fs.unlinkSync(pidFile);
-    }
+  if (fs.existsSync(pidFile)) {
+    fs.unlinkSync(pidFile);
+  }
 }
