@@ -90,6 +90,7 @@ module.exports = processArgv =>
     .command("ls", "List servers", {}, argv => servers.ls(argv))
     .command("start", "Start daemon", {}, () => daemon.start())
     .command("stop", "Stop daemon", {}, () => daemon.stop())
+    .command("restart", "Restart daemon", {}, () => daemon.restart())
     .example("$0 add --help")
     .example("$0 add nodemon")
     .example("$0 add npm start")

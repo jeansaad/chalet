@@ -46,3 +46,33 @@ test("stop should stop daemon", t => {
   sinon.assert.calledWithExactly(process.kill, "1234");
   t.pass();
 });
+
+test("restart should stop and restart daemon", t => {
+  fs.writeFileSync(common.pidFile, "1234");
+
+  const node = process.execPath;
+  const daemonFile = path.join(__dirname, "../../src/daemon");
+  const daemonLog = path.resolve(untildify("~/.chalet/daemon.log"));
+
+  cli(["", "", "restart"]);
+
+  sinon.assert.calledWithExactly(userStartup.remove, "chalet");
+  sinon.assert.calledWithExactly(process.kill, "1234");
+   
+  sinon.assert.calledWithExactly(
+    userStartup.create,
+    "chalet",
+    node,
+    [daemonFile],
+    daemonLog
+  );
+
+  t.is(
+    fs.readFileSync(common.startupFile, "utf-8"),
+    userStartup.getFile("chalet"),
+    "startupFile should point to startup file path"
+  );
+
+  t.pass();
+});
+

@@ -8,7 +8,8 @@ const uninstall = require("../scripts/uninstall");
 
 module.exports = {
   start,
-  stop
+  stop,
+  restart
 };
 
 // Start daemon in background
@@ -33,4 +34,10 @@ function stop() {
   // kills process and clean stuff in ~/.chalet
   uninstall();
   console.log("Stopped");
+}
+
+// Restart daemon
+function restart() {
+    stop();
+    start();
 }
