@@ -215,6 +215,16 @@ To override a value, simply add it to `~/.chalet/conf.json` and run `chalet stop
 
 ## FAQ
 
+#### Problem with self signed certificates
+
+You will want to delete your existing certificates and restart chalet:
+
+```sh
+chalet stop
+rm ~/.chalet/cert.pem ~/.chalet/key.pem
+chalet start
+```
+
 #### Setting a fixed port
 
 ```sh
