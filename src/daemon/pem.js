@@ -20,7 +20,9 @@ function generate() {
     const pems = selfsigned.generate(
       [{ name: "commonName", value: "chalet" }],
       {
-        days: 365
+        keySize: 2048,
+        days: 365,
+        algorithm: "sha256"
       }
     );
     fs.writeFileSync(KEY_FILE, pems.private, "utf-8");
