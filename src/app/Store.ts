@@ -101,8 +101,7 @@ export default class Store {
 
   @action
   public selectMonitor(monitorId: string) {
-    this.selectedMonitorId =
-      this.selectedMonitorId === monitorId ? "" : monitorId;
+    this.selectedMonitorId = monitorId;
   }
 
   @action
