@@ -16,6 +16,67 @@ export interface IProps {
 
 function Nav({ store }: IProps) {
   const { isLoading, selectedMonitorId, monitors, proxies } = store;
+
+  React.useEffect(() => {
+    function getCurrentMonitorState() {
+      const monitorsArray = Array.from(store.monitors);
+      const currentIndex = monitorsArray.findIndex(([id, monitor]) => {
+        return store.selectedMonitorId === id;
+      });
+
+      if (currentIndex === -1) {
+        return {
+          current: null,
+          next: monitorsArray[0],
+          prev: monitorsArray[monitorsArray.length - 1],
+        };
+      }
+
+      return {
+        current: monitorsArray[currentIndex],
+        next:
+          currentIndex < monitorsArray.length - 1
+            ? monitorsArray[currentIndex + 1]
+            : null,
+        prev: currentIndex > 0 ? monitorsArray[currentIndex - 1] : null,
+      };
+    }
+
+    function selectPrevMonitor() {
+      const { prev } = getCurrentMonitorState();
+      if (prev != null) {
+        store.selectMonitor(prev[0]);
+      }
+    }
+
+    function selectNextMonitor() {
+      const { next } = getCurrentMonitorState();
+      if (next != null) {
+        store.selectMonitor(next[0]);
+      }
+    }
+
+    const listener = (event: KeyboardEvent) => {
+      // shift + alt to avoid system shortcuts
+      if (event.shiftKey && event.altKey) {
+        switch (event.code) {
+          case "BracketLeft":
+          case "ArrowUp":
+            selectPrevMonitor();
+            break;
+          case "BracketRight":
+          case "ArrowDown":
+            selectNextMonitor();
+            break;
+        }
+      }
+    };
+    document.addEventListener("keydown", listener);
+    return () => {
+      document.addEventListener("keydown", listener);
+    };
+  }, [store]);
+
   return (
     <div className="nav">
       <header>chalet</header>
