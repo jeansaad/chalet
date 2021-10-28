@@ -1,10 +1,12 @@
 import * as classNames from "classnames";
 import { observer } from "mobx-react";
+import KeyboardIcon from "@material-ui/icons/Keyboard";
 import * as React from "react";
 import Store, { RUNNING } from "../../Store";
 import Link from "../Link";
 import Switch from "../Switch";
 import "./index.css";
+import KeyboardShortcutsModal from "../KeyboardShortcutsModal";
 
 const examples = `~/app$ chalet add 'cmd'
 ~/app$ chalet add 'cmd -p $PORT'
@@ -16,6 +18,11 @@ export interface IProps {
 
 function Nav({ store }: IProps) {
   const { isLoading, selectedMonitorId, monitors, proxies } = store;
+
+  const [
+    showKeyboardShortcutsModal,
+    setShowKeyboardShortcutsModal,
+  ] = React.useState(false);
 
   React.useEffect(() => {
     function getCurrentMonitorState() {
@@ -68,7 +75,14 @@ function Nav({ store }: IProps) {
           case "ArrowDown":
             selectNextMonitor();
             break;
+          case "Slash":
+            setShowKeyboardShortcutsModal((old) => !old);
+            break;
         }
+      }
+
+      if (event.code === "Escape" && showKeyboardShortcutsModal) {
+        setShowKeyboardShortcutsModal(false);
       }
     };
     document.addEventListener("keydown", listener);
@@ -79,7 +93,18 @@ function Nav({ store }: IProps) {
 
   return (
     <div className="nav">
-      <header>chalet</header>
+      <header>
+        <span>chalet</span>
+        <button
+          title="View keyboard shortcuts (shift + alt + ?)"
+          onClick={() => setShowKeyboardShortcutsModal(true)}
+          className={classNames("keyboard-shortcuts-button", {
+            active: showKeyboardShortcutsModal,
+          })}
+        >
+          <KeyboardIcon />
+        </button>
+      </header>
       <div className={classNames("menu", { hidden: isLoading })}>
         {monitors.size === 0 && proxies.size === 0 && (
           <div>
@@ -100,7 +125,7 @@ function Nav({ store }: IProps) {
                     key={id}
                     className={classNames("monitor", {
                       running: monitor.status === RUNNING,
-                      selected: id === selectedMonitorId
+                      selected: id === selectedMonitorId,
                     })}
                     onClick={() => store.selectMonitor(id)}
                   >
@@ -142,6 +167,10 @@ function Nav({ store }: IProps) {
           README
         </a>
       </footer>
+      <KeyboardShortcutsModal
+        visible={showKeyboardShortcutsModal}
+        hide={() => setShowKeyboardShortcutsModal(false)}
+      />
     </div>
   );
 }

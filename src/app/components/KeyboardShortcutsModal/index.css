@@ -1,0 +1,52 @@
+.modal-bg {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+.modal {
+  padding: 1rem;
+  color: black;
+  cursor: initial;
+  background-color: white;
+  border-radius: 0.5rem;
+}
+
+.modal .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.modal h3 {
+  margin: 0;
+}
+
+.modal ul {
+  justify-content: flex-start;
+  min-width: 40rem;
+  margin-bottom: 0;
+}
+
+.modal ul li {
+  height: unset;
+  margin-bottom: 8px;
+}
+
+.modal button {
+  padding: 8px 12px;
+  font-family: "Roboto", sans-serif;
+  color: black;
+}
+
+.modal button:hover {
+  background-color: #bfbfbf;
+}
