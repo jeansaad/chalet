@@ -75,7 +75,7 @@ li.running * {
 
 li.monitor:hover {
   cursor: pointer;
-  background: var(--primary);
+  background: var(--primary-light);
 }
 
 li.selected {
