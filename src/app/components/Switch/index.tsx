@@ -17,7 +17,7 @@ function Switch({ onClick = () => null, checked }: IProps) {
       }}
     >
       <input type="checkbox" checked={checked} />
-      <span className="slider" />
+      <span className="slider" title="Toggle monitor (shift + alt + ,)" />
     </label>
   )
 }

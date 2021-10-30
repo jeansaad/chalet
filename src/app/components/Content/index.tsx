@@ -4,7 +4,7 @@ import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
 import ClearAllIcon from '@material-ui/icons/ClearAll'
 import Link from '../Link'
 
-import Store from '../../Store'
+import Store, { RUNNING } from '../../Store'
 import './index.css'
 
 export interface IProps {
@@ -15,6 +15,54 @@ export interface IProps {
 class Content extends React.Component<IProps, {}> {
   private el: HTMLDivElement | null = null
   private atBottom: boolean = true
+  private keydownListener: ((event: KeyboardEvent) => void) | null = null
+
+  public getKeydownListener(store: Store) {
+    if (this.keydownListener == null) {
+      this.keydownListener = (event: KeyboardEvent) => {
+        const selectedMonitor = store.monitors.get(store.selectedMonitorId);
+        const isSelectedMonitorRunning = selectedMonitor?.status === RUNNING
+        // shift + alt to avoid system shortcuts
+        if (event.shiftKey && event.altKey) {
+          switch (event.code) {
+            case 'KeyK':
+              store.clearOutput(store.selectedMonitorId)
+              break
+            case 'KeyS':
+              this.scrollToBottom()
+              break
+            case 'Comma':
+              if (!isSelectedMonitorRunning) {
+                this.scrollToBottom()
+              }
+              store.toggleMonitor(store.selectedMonitorId)
+              break
+            case 'Period':
+              if (!isSelectedMonitorRunning) {
+                store.clearOutput(store.selectedMonitorId)
+              }
+              store.toggleMonitor(store.selectedMonitorId)
+              break
+          }
+        }
+      }
+    }
+    return this.keydownListener
+  }
+
+  public componentDidMount() {
+    document.addEventListener(
+      'keydown',
+      this.getKeydownListener(this.props.store),
+    )
+  }
+
+  public componentWillUnmount() {
+    document.removeEventListener(
+      'keydown',
+      this.getKeydownListener(this.props.store),
+    )
+  }
 
   public componentWillUpdate() {
     if (this.el) {
@@ -64,13 +112,13 @@ class Content extends React.Component<IProps, {}> {
           </span>
           <span>
             <button
-              title="Clear output"
+              title="Clear output (shift + alt + K)"
               onClick={() => store.clearOutput(store.selectedMonitorId)}
             >
               <ClearAllIcon />
             </button>
             <button
-              title="Scroll to bottom"
+              title="Scroll to bottom (shift + alt + S)"
               onClick={() => this.scrollToBottom()}
             >
               <ArrowDownwardIcon />

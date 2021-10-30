@@ -6,11 +6,28 @@
 }
 
 header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 1rem;
   font-size: 1rem;
   line-height: 1rem;
   text-transform: capitalize;
   border-bottom: 1px solid var(--primary);
+}
+
+.keyboard-shortcuts-button {
+  margin-top: -1rem;
+  margin-right: -1rem;
+  margin-bottom: -1rem;
+}
+
+.keyboard-shortcuts-button.active {
+  background-color: var(--primary-light);
+}
+
+.keyboard-shortcuts-button.active:hover {
+  background-color: var(--primary);
 }
 
 .menu {
