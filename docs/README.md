@@ -1,14 +1,14 @@
-# Configuring local .localhost domains
+# Configuring local .test domains
 
 _This step is totally optional and you can use chalet without it._
 
-To use local `.localhost` domain, you need to configure your browser or network to use chalet's proxy auto-config file which is available at `http://localhost:2000/proxy.pac` [[view file content](../src/daemon/views/proxy-pac.pug)].
+To use local `.test` domain, you need to configure your browser or network to use chalet's proxy auto-config file which is available at `http://localhost:2000/proxy.pac` [[view file content](../src/daemon/views/proxy-pac.pug)].
 
-**Important** chalet MUST be running before configuring your network or browser so that `http://localhost:2000/proxy.pac` is available. If chalet is started after and you can't access `.localhost` domains, simply disable/enable network or restart browser.
+**Important** chalet MUST be running before configuring your network or browser so that `http://localhost:2000/proxy.pac` is available. If chalet is started after and you can't access `.test` domains, simply disable/enable network or restart browser.
 
 ## Configuring another .tld
 
-You can edit `~/.chalet/conf.json` to use another Top-level Domain than `.localhost`.
+You can edit `~/.chalet/conf.json` to use another Top-level Domain than `.test`.
 
 ```json
 {

@@ -31,9 +31,9 @@ If you're upgrading, please be sure to:
 
 ## Features
 
-- **Local domains** - `http://project.localhost`
-- **HTTPS via local self-signed SSL certificate** - `https://project.localhost`
-- **Wildcard subdomains** - `http://*.project.localhost`
+- **Local domains** - `http://project.test`
+- **HTTPS via local self-signed SSL certificate** - `https://project.test`
+- **Wildcard subdomains** - `http://*.project.test`
 - **Works everywhere** - macOS, Linux and Windows
 - **Works with any server** - Node, Ruby, PHP, ...
 - **Proxy** - Map local domains to remote servers
@@ -60,7 +60,7 @@ You can also visit https://nodejs.org.
 
 ### Local domains (optional)
 
-To use local `.localhost` domains, you need to configure your network or browser to use chalet's proxy auto-config file or you can skip this step for the moment and go directly to http://localhost:2000
+To use local `.test` domains, you need to configure your network or browser to use chalet's proxy auto-config file or you can skip this step for the moment and go directly to http://localhost:2000
 
 [**See instructions here**](https://github.com/jeansaad/chalet/blob/master/docs/README.md).
 
@@ -73,7 +73,7 @@ To use local `.localhost` domains, you need to configure your network or browser
 ~/projects/two$ chalet run 'npm start'
 ```
 
-Visit [localhost:2000](http://localhost:2000) or [http(s)://chalet.localhost](http://chalet.localhost).
+Visit [localhost:2000](http://localhost:2000) or [http(s)://chalet.test](http://chalet.test).
 
 Alternatively you can directly go to
 
@@ -83,8 +83,8 @@ http://localhost:2000/two
 ```
 
 ```
-http(s)://one.localhost
-http(s)://two.localhost
+http(s)://one.test
+http(s)://two.test
 ```
 
 #### Popular servers examples
@@ -118,8 +118,8 @@ Add your remote servers
 You can now access them using
 
 ```sh
-http://aliased-address.localhost # will proxy requests to http://192.168.1.12:1337
-http://aliased-domain.localhost # will proxy requests to http://google.com
+http://aliased-address.test # will proxy requests to http://192.168.1.12:1337
+http://aliased-domain.test # will proxy requests to http://google.com
 ```
 
 ## CLI usage and options
@@ -170,7 +170,7 @@ chalet add "cmd -p %PORT%" # Windows
 
 ## Fallback URL
 
-If you're offline or can't configure your browser to use `.localhost` domains, you can **always** access your local servers by going to [localhost:2000](http://localhost:2000).
+If you're offline or can't configure your browser to use `.test` domains, you can **always** access your local servers by going to [localhost:2000](http://localhost:2000).
 
 ## Configurations, logs and self-signed SSL certificate
 
@@ -195,8 +195,8 @@ By default, `chalet` uses the following configuration values:
   // Timeout when proxying requests to local domains
   "timeout": 5000,
 
-  // Change this if you want to use another tld than .localhost
-  "tld": 'localhost',
+  // Change this if you want to use another tld than .test
+  "tld": 'test',
 
   // If you're behind a corporate proxy, replace this with your network proxy IP (example: "1.2.3.4:5000")
   "proxy": false
@@ -251,7 +251,7 @@ chalet add --http-proxy-env 'server-cmd'
 chalet add --change-origin 'https://jsonplaceholder.typicode.com'
 ```
 
-_When proxying to a `https` server, you may get an error because your `.localhost` domain doesn't match the host defined in the server certificate. With this flag, `host` header is changed to match the target URL._
+_When proxying to a `https` server, you may get an error because your `.test` domain doesn't match the host defined in the server certificate. With this flag, `host` header is changed to match the target URL._
 
 #### `ENOSPC` and `EACCES` errors
 

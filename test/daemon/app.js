@@ -148,7 +148,7 @@ test.cb("GET http://failing.tld should return 502", t => {
 });
 
 test.cb(
-  "GET http://proxy.tld should return 200 and host should be proxy.localhost",
+  "GET http://proxy.tld should return 200 and host should be proxy.test",
   t => {
     request(app)
       .get("/")
