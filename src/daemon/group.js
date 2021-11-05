@@ -292,7 +292,7 @@ class Group extends EventEmitter {
     const { item } = req.chalet;
 
     // Handle case where port is set
-    // http://app.localhost:5000 should proxy to http://localhost:5000
+    // http://app.test:5000 should proxy to http://localhost:5000
     if (port) {
       const target = `http://127.0.0.1:${port}`;
 
@@ -385,7 +385,7 @@ class Group extends EventEmitter {
     }
   }
 
-  // Handle CONNECT, used by WebSockets and https when accessing .localhost domains
+  // Handle CONNECT, used by WebSockets and https when accessing .test domains
   handleConnect(req, socket, head) {
     if (req.headers.host) {
       const { host } = req.headers;
