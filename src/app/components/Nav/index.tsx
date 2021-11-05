@@ -2,11 +2,11 @@ import * as classNames from "classnames";
 import { observer } from "mobx-react";
 import KeyboardIcon from "@material-ui/icons/Keyboard";
 import * as React from "react";
-import Store, { RUNNING } from "../../Store";
+import Store from "../../Store";
 import Link from "../Link";
-import Switch from "../Switch";
 import "./index.css";
 import KeyboardShortcutsModal from "../KeyboardShortcutsModal";
+import MonitorList from '../MonitorList';
 
 const examples = `~/app$ chalet add 'cmd'
 ~/app$ chalet add 'cmd -p $PORT'
@@ -118,30 +118,11 @@ function Nav({ store }: IProps) {
         {monitors.size > 0 && (
           <div>
             <h2>monitors</h2>
-            <ul>
-              {Array.from(monitors).map(([id, monitor]) => {
-                return (
-                  <li
-                    key={id}
-                    className={classNames("monitor", {
-                      running: monitor.status === RUNNING,
-                      selected: id === selectedMonitorId,
-                    })}
-                    onClick={() => store.selectMonitor(id)}
-                  >
-                    <span>
-                      <Link id={id} />
-                    </span>
-                    <span>
-                      <Switch
-                        onClick={() => store.toggleMonitor(id)}
-                        checked={monitor.status === RUNNING}
-                      />
-                    </span>
-                  </li>
-                );
-              })}
-            </ul>
+            <MonitorList monitors={monitors}
+                         selected={selectedMonitorId}
+                         onMonitorClick={id => store.selectMonitor(id)}
+                         onMonitorToggle={id => store.toggleMonitor(id)}
+                         />
           </div>
         )}
 

@@ -6,7 +6,7 @@ const log = require("./log");
 const common = require("../common");
 
 function getId(file) {
-  return path.basename(file, ".json");
+  return path.relative(common.serversDir, file).replace(/.json$/, "");
 }
 
 function handleAdd(group, file) {
@@ -34,6 +34,18 @@ function handleChange(group, file) {
   });
 }
 
+function getFilesRecursive(dir) {
+  const entries = fs.readdirSync(dir);
+
+  return entries.reduce((prev, curr) => {
+    const absolutePath = path.resolve(dir, curr);
+    if (fs.lstatSync(absolutePath).isDirectory()) {
+      return [...prev, ...getFilesRecursive(absolutePath)];
+    }
+    return [...prev, absolutePath];
+  }, []);
+}
+
 module.exports = (group, opts = { watch: true }) => {
   const dir = common.serversDir;
 
@@ -51,7 +63,7 @@ module.exports = (group, opts = { watch: true }) => {
   }
 
   // Bootstrap
-  fs.readdirSync(dir).forEach(file => {
+  getFilesRecursive(dir).forEach(file => {
     handleAdd(group, path.resolve(dir, file));
   });
 };

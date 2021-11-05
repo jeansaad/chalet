@@ -108,12 +108,13 @@ export default class Store {
   public toggleMonitor(monitorId: string) {
     const monitor = this.monitors.get(monitorId);
 
+    const encodedMonitorId = encodeURIComponent(monitorId);
     if (monitor) {
       if (monitor.status === RUNNING) {
-        api.stopMonitor(monitorId);
+        api.stopMonitor(encodedMonitorId);
         monitor.status = STOPPED; // optimistic update
       } else {
-        api.startMonitor(monitorId);
+        api.startMonitor(encodedMonitorId);
         monitor.status = RUNNING;
       }
     }

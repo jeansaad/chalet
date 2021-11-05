@@ -1,0 +1,33 @@
+.expansion-panel {
+  width: 100%;
+}
+
+.expansion-header {
+  display: flex;
+  height: 3rem;
+  padding: 0 1rem;
+  cursor: pointer;
+}
+
+.expansion-header:hover {
+  background: var(--primary-light);
+}
+
+.expansion-header__title {
+  flex: 1;
+  align-self: center;
+  color: #6c6c6f;
+}
+
+.expansion-header__arrow {
+  align-self: center;
+}
+
+.expansion-header__arrow svg {
+  transition: transform 0.2s ease;
+  transform-origin: center;
+}
+
+.open .expansion-header__arrow svg {
+  transform: rotate(180deg);
+}
