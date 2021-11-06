@@ -7,6 +7,7 @@ import Link from "../Link";
 import "./index.css";
 import KeyboardShortcutsModal from "../KeyboardShortcutsModal";
 import MonitorList from '../MonitorList';
+import ProxyList from '../ProxyList';
 
 const examples = `~/app$ chalet add 'cmd'
 ~/app$ chalet add 'cmd -p $PORT'
@@ -129,17 +130,7 @@ function Nav({ store }: IProps) {
         {proxies.size > 0 && (
           <div>
             <h2>proxies</h2>
-            <ul>
-              {Array.from(proxies).map(([id, proxy]) => {
-                return (
-                  <li key={id}>
-                    <span>
-                      <Link id={id} />
-                    </span>
-                  </li>
-                );
-              })}
-            </ul>
+            <ProxyList proxies={proxies} />
           </div>
         )}
       </div>
