@@ -7,9 +7,11 @@ import "./index.css";
 
 export interface IProps {
   proxies: Map<string, IProxy>;
+  idPrefix?: string;
 }
 
-function ProxyList({ proxies }: IProps) {
+function ProxyList({ proxies, idPrefix: idPrefixProp }: IProps) {
+  const idPrefix = idPrefixProp ?? '';
   const groups = Array.from(proxies)
     .filter(([id]) => id.includes('/'))
     .reduce((prev, [id, proxy]) => {
@@ -31,9 +33,9 @@ function ProxyList({ proxies }: IProps) {
         .filter(([id]) => !id.includes('/'))
         .map(([id, proxy]) => {
           return (
-            <li key={id} className={'proxy'}>
+            <li key={idPrefix + id} className={'proxy'}>
               <span>
-                <Link id={id} />
+                <Link id={encodeURIComponent(idPrefix + id)}>{id}</Link>
               </span>
             </li>
           )
@@ -43,8 +45,7 @@ function ProxyList({ proxies }: IProps) {
           <li key={key}>
             <NavExpansionPanel title={key}>
               <div className={'proxy-group'}>
-                <ProxyList proxies={group}
-                />
+                <ProxyList proxies={group} idPrefix={`${idPrefix}${key}/`} />
               </div>
             </NavExpansionPanel>
           </li>

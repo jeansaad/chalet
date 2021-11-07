@@ -12,7 +12,7 @@ export interface IProps {
   selected: string
   onMonitorClick?: (id: string) => void
   onMonitorToggle?: (id: string) => void
-  depth?: number
+  idPrefix?: string
 }
 
 function MonitorList({
@@ -20,9 +20,11 @@ function MonitorList({
                        selected,
                        onMonitorClick,
                        onMonitorToggle,
+                       idPrefix: idPrefixProp,
                      }: IProps) {
   const monitorClickCallback = onMonitorClick ?? (() => undefined)
   const monitorToggleCallback = onMonitorToggle ?? (() => undefined)
+  const idPrefix = idPrefixProp ?? ''
   const groups = Array.from(monitors)
     .filter(([id]) => id.includes('/'))
     .reduce((prev, [id, monitor]) => {
@@ -45,19 +47,19 @@ function MonitorList({
         .map(([id, monitor]) => {
           return (
             <li
-              key={id}
+              key={idPrefix + id}
               className={classNames('monitor', {
                 running: monitor.status === RUNNING,
-                selected: id === selected
+                selected: (idPrefix + id) === selected
               })}
-              onClick={() => monitorClickCallback(id)}
+              onClick={() => monitorClickCallback(idPrefix + id)}
             >
               <span>
-                <Link id={id} />
+                <Link id={encodeURIComponent(idPrefix + id)}>{id}</Link>
               </span>
               <span>
                 <Switch
-                  onClick={() => monitorToggleCallback(id)}
+                  onClick={() => monitorToggleCallback(idPrefix + id)}
                   checked={monitor.status === RUNNING}
                 />
               </span>
@@ -70,9 +72,10 @@ function MonitorList({
             <NavExpansionPanel title={key} open={selected.startsWith(`${key}/`) || undefined}>
               <div className={'monitor-group'}>
                 <MonitorList monitors={group}
-                             selected={selected.replace(new RegExp(`^${key}\/`), '')}
-                             onMonitorClick={id => monitorClickCallback(`${key}/${id}`)}
-                             onMonitorToggle={id => monitorToggleCallback(`${key}/${id}`)}
+                             selected={selected}
+                             onMonitorClick={id => monitorClickCallback(id)}
+                             onMonitorToggle={id => monitorToggleCallback(id)}
+                             idPrefix={`${idPrefix}${key}/`}
                 />
               </div>
             </NavExpansionPanel>

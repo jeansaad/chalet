@@ -15,12 +15,13 @@ function href(id: string) {
 
 interface IProps {
   id: string;
+  children?: React.ReactNode;
 }
 
-function Link({ id }: IProps) {
+function Link({ id, children }: IProps) {
   return (
     <a href={href(id)} target="_blank" onClick={e => e.stopPropagation()}>
-      {id}
+      {children ?? id}
     </a>
   );
 }

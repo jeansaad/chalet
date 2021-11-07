@@ -108,7 +108,9 @@ class Content extends React.Component<IProps, {}> {
       >
         <div className="content-bar">
           <span>
-            <Link id={store.selectedMonitorId} />
+            <Link id={encodeURIComponent(store.selectedMonitorId)}>
+              {store.selectedMonitorId}
+            </Link>
           </span>
           <span>
             <button
