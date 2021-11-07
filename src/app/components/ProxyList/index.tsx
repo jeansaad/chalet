@@ -31,7 +31,7 @@ function ProxyList({ proxies }: IProps) {
         .filter(([id]) => !id.includes('/'))
         .map(([id, proxy]) => {
           return (
-            <li key={id}>
+            <li key={id} className={'proxy'}>
               <span>
                 <Link id={id} />
               </span>

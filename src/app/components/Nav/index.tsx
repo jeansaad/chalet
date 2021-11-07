@@ -117,7 +117,7 @@ function Nav({ store }: IProps) {
         )}
 
         {monitors.size > 0 && (
-          <div>
+          <div className={'monitors-nav'}>
             <h2>monitors</h2>
             <MonitorList monitors={monitors}
                          selected={selectedMonitorId}
@@ -128,7 +128,7 @@ function Nav({ store }: IProps) {
         )}
 
         {proxies.size > 0 && (
-          <div>
+          <div className={'proxies-nav'}>
             <h2>proxies</h2>
             <ProxyList proxies={proxies} />
           </div>

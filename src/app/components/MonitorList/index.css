@@ -1,3 +1,20 @@
+.monitor {
+  height: 3rem;
+}
+
+.monitor.running * {
+  color: white;
+}
+
+.monitor:hover {
+  cursor: pointer;
+  background: var(--primary-light);
+}
+
+.monitor.selected {
+  background: var(--primary);
+}
+
 .monitor-group {
   padding-left: 1rem;
 }

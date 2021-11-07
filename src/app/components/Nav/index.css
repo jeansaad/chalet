@@ -53,33 +53,19 @@ h2 {
 
 ul {
   padding: 0;
-  margin: 0 0 2rem 0;
+  margin: 0;
   list-style: none;
 }
 
 li {
   display: flex;
   justify-content: space-between;
-  height: 3rem;
   color: var(--primary-light);
   transition: border-color 0.2s;
 }
 
 li:focus {
   outline: none;
-}
-
-li.running * {
-  color: white;
-}
-
-li.monitor:hover {
-  cursor: pointer;
-  background: var(--primary-light);
-}
-
-li.selected {
-  background: var(--primary);
 }
 
 li > span {
@@ -94,4 +80,8 @@ li > span:nth-last-child() {
 
 p {
   padding: 1rem;
+}
+
+.monitors-nav {
+  margin-bottom: 2rem;
 }
