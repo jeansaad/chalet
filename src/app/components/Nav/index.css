@@ -75,11 +75,11 @@ li.running * {
 
 li.monitor:hover {
   cursor: pointer;
-  background: var(--primary-light);
+  background: var(--primary);
 }
 
-li.selected {
-  background: var(--primary);
+li.selected,li.selected:hover {
+  background: var(--primary-light);
 }
 
 li > span {
