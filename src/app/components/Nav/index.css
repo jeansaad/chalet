@@ -78,7 +78,8 @@ li.monitor:hover {
   background: var(--primary);
 }
 
-li.selected,li.selected:hover {
+li.selected,
+li.selected:hover {
   background: var(--primary-light);
 }
 
