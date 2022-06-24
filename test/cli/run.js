@@ -32,7 +32,11 @@ test("spawn with port", t => {
     "should add a target"
   );
 
-  t.is(servers.add.firstCall.args[1], opts, "should pass options to add");
+  t.deepEqual(
+    servers.add.firstCall.args[1],
+    opts,
+    "should pass options to add"
+  );
 
   t.true(servers.rm.called);
   t.is(servers.rm.firstCall.args[0], opts, "should use same options to remove");

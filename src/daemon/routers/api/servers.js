@@ -7,6 +7,12 @@ module.exports = group => {
     res.json(group.list());
   });
 
+  router.get("/:id/port", (req, res) => {
+    const port = group.findPort(req.params.id);
+    if (port) res.json(port);
+    return res.end();
+  });
+
   router.post(
     "/:id/start",
     group.exists.bind(group),

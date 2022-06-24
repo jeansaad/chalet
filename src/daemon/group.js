@@ -21,6 +21,7 @@ class Group extends EventEmitter {
     super();
 
     this._list = {};
+    this._ports = {};
     this._proxy = httpProxy.createProxyServer({
       xfwd: true
     });
@@ -64,7 +65,15 @@ class Group extends EventEmitter {
     return this._list[id];
   }
 
+  findPort(id) {
+    return this._ports[id];
+  }
+
   add(id, conf) {
+    if (conf.env && conf.env.PORT) {
+      this._ports[id] = conf.env.PORT;
+    }
+
     if (conf.target) {
       log(`Add target ${id}`);
       this._list[id] = conf;
