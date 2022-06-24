@@ -46,7 +46,7 @@ const addOptions = {
   },
   force: {
     alias: "f",
-    describe: "Forces creation of configuration if one already exits",
+    describe: "Forces creation of configuration if one already exists",
     default: false,
     boolean: true
   }
