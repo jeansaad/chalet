@@ -3,6 +3,7 @@ const http = require("http");
 const express = require("express");
 const vhost = require("vhost");
 const serverReady = require("server-ready");
+const bodyParser = require("body-parser");
 const conf = require("../conf");
 
 // Require routes
@@ -13,6 +14,9 @@ const TLDHost = require("./vhosts/tld");
 module.exports = group => {
   const app = express();
   const server = http.createServer(app);
+
+  // Express Middlewares
+  app.use(bodyParser.json());
 
   // Initialize routes
   const indexRouter = IndexRouter(group);

@@ -13,12 +13,14 @@ export interface ILine {
 }
 
 export interface IMonitor {
+  id: string;
   cwd: string;
   command: string[];
   status: string;
   output: ILine[];
   started: Date;
   pid: number;
+  data: Record<string, any>;
 }
 
 export const RUNNING = "running";
@@ -46,14 +48,14 @@ export default class Store {
 
   @action
   public watchServers() {
-    api.watchServers(data => {
+    api.watchServers((data) => {
       // Delete servers that do not exist anymore in Chalet
       clear(this.monitors, data);
       clear(this.proxies, data);
 
       // Create or update servers
-      Object.keys(data).forEach(id => {
-        const server = data[id];
+      Object.keys(data).forEach((id) => {
+        const server = { id, ...data[id] }
         if (this.monitors.has(id) || this.proxies.has(id)) {
           // Update server state
           if (server.hasOwnProperty("status")) {
@@ -79,14 +81,14 @@ export default class Store {
 
   @action
   public watchOutput() {
-    api.watchOutput(data => {
+    api.watchOutput((data) => {
       const { id, output } = data;
-      const lines = formatLines(output).map(html => ({
+      const lines = formatLines(output).map((html) => ({
         html,
-        id: uniqueId()
+        id: uniqueId(),
       }));
 
-      lines.forEach(line => {
+      lines.forEach((line) => {
         const monitor = this.monitors.get(id);
         if (monitor) {
           monitor.output.push(line);
@@ -124,6 +126,19 @@ export default class Store {
     const monitor = this.monitors.get(monitorId);
     if (monitor) {
       monitor.output = [];
+    }
+  }
+
+  @action
+  public async updateMonitor(monitorId: string, updates: api.UpdateMonitor) {
+    const monitor = this.monitors.get(monitorId);
+
+    if (monitor) {
+      await api.stopMonitor(monitorId);
+      monitor.status = STOPPED;
+      await api.updateMonitor(monitorId, updates);
+      await api.startMonitor(monitorId);
+      monitor.status = RUNNING;
     }
   }
 }

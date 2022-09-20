@@ -1,109 +1,129 @@
-import { observer } from 'mobx-react'
-import * as React from 'react'
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
-import ClearAllIcon from '@material-ui/icons/ClearAll'
-import Link from '../Link'
+import { observer } from "mobx-react";
+import * as React from "react";
+import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
+import ClearAllIcon from "@material-ui/icons/ClearAll";
+import SettingsIcon from "@material-ui/icons/Settings";
+import Link from "../Link";
+import Settings from "../Settings";
+import AnimateHeight from "react-animate-height";
 
-import Store, { RUNNING } from '../../Store'
-import './index.css'
+import Store, { RUNNING } from "../../Store";
+import "./index.css";
 
 export interface IProps {
-  store: Store
+  store: Store;
+}
+
+interface IState {
+  settingsOpen: boolean;
 }
 
 @observer
-class Content extends React.Component<IProps, {}> {
-  private el: HTMLDivElement | null = null
-  private atBottom: boolean = true
-  private keydownListener: ((event: KeyboardEvent) => void) | null = null
+class Content extends React.Component<IProps, IState> {
+  private el: HTMLDivElement | null = null;
+  private atBottom: boolean = true;
+  private keydownListener: ((event: KeyboardEvent) => void) | null = null;
+
+  constructor(props: IProps) {
+    super(props);
+    this.state = { settingsOpen: false };
+  }
 
   public getKeydownListener(store: Store) {
     if (this.keydownListener == null) {
       this.keydownListener = (event: KeyboardEvent) => {
         const selectedMonitor = store.monitors.get(store.selectedMonitorId);
-        const isSelectedMonitorRunning = selectedMonitor?.status === RUNNING
+        const isSelectedMonitorRunning = selectedMonitor?.status === RUNNING;
         // shift + alt to avoid system shortcuts
         if (event.shiftKey && event.altKey) {
           switch (event.code) {
-            case 'KeyK':
-              store.clearOutput(store.selectedMonitorId)
-              break
-            case 'KeyS':
-              this.scrollToBottom()
-              break
-            case 'Comma':
+            case "KeyK":
+              store.clearOutput(store.selectedMonitorId);
+              break;
+            case "KeyS":
+              this.scrollToBottom();
+              break;
+            case "Comma":
               if (!isSelectedMonitorRunning) {
-                this.scrollToBottom()
+                this.scrollToBottom();
               }
-              store.toggleMonitor(store.selectedMonitorId)
-              break
-            case 'Period':
+              store.toggleMonitor(store.selectedMonitorId);
+              break;
+            case "Period":
               if (!isSelectedMonitorRunning) {
-                store.clearOutput(store.selectedMonitorId)
+                store.clearOutput(store.selectedMonitorId);
               }
-              store.toggleMonitor(store.selectedMonitorId)
-              break
+              store.toggleMonitor(store.selectedMonitorId);
+              break;
           }
         }
-      }
+      };
     }
-    return this.keydownListener
+    return this.keydownListener;
   }
 
   public componentDidMount() {
     document.addEventListener(
-      'keydown',
-      this.getKeydownListener(this.props.store),
-    )
+      "keydown",
+      this.getKeydownListener(this.props.store)
+    );
   }
 
   public componentWillUnmount() {
     document.removeEventListener(
-      'keydown',
-      this.getKeydownListener(this.props.store),
-    )
+      "keydown",
+      this.getKeydownListener(this.props.store)
+    );
+    this.state;
   }
 
   public componentWillUpdate() {
     if (this.el) {
-      this.atBottom = this.isAtBottom()
+      this.atBottom = this.isAtBottom();
     }
   }
 
   public componentDidUpdate() {
     if (this.atBottom) {
-      this.scrollToBottom()
+      this.scrollToBottom();
     }
   }
 
   public isAtBottom() {
     if (this.el) {
-      const { scrollHeight, scrollTop, clientHeight } = this.el
-      return scrollHeight - scrollTop === clientHeight
+      const { scrollHeight, scrollTop, clientHeight } = this.el;
+      return scrollHeight - scrollTop === clientHeight;
     } else {
-      return true
+      return true;
     }
   }
 
   public scrollToBottom() {
     if (this.el) {
-      this.el.scrollTop = this.el.scrollHeight
+      this.el.scrollTop = this.el.scrollHeight;
     }
   }
 
   public onScroll() {
-    this.atBottom = this.isAtBottom()
+    this.atBottom = this.isAtBottom();
+  }
+
+  public toggleSettings() {
+    const isOpen = this.state.settingsOpen;
+    this.setState({
+      settingsOpen: !isOpen,
+    });
   }
 
   public render() {
-    const { store } = this.props
-    const monitor = store.monitors.get(store.selectedMonitorId)
+    const { store } = this.props;
+    const monitor = store.monitors.get(store.selectedMonitorId);
     return (
       <div
         className="content"
         onScroll={() => this.onScroll()}
-        ref={el => {
-          this.el = el
+        ref={(el) => {
+          this.el = el;
         }}
       >
         <div className="content-bar">
@@ -111,6 +131,9 @@ class Content extends React.Component<IProps, {}> {
             <Link id={store.selectedMonitorId} />
           </span>
           <span>
+            <button title="Edit Config" onClick={() => this.toggleSettings()}>
+              <SettingsIcon />
+            </button>
             <button
               title="Clear output (shift + alt + K)"
               onClick={() => store.clearOutput(store.selectedMonitorId)}
@@ -125,9 +148,16 @@ class Content extends React.Component<IProps, {}> {
             </button>
           </span>
         </div>
+        <AnimateHeight
+          duration={500}
+          height={this.state.settingsOpen ? "auto" : 0}
+          id="settings"
+        >
+          {monitor && <Settings monitor={monitor} onClose={() => this.toggleSettings()} />}
+        </AnimateHeight>
         <pre>
           {monitor &&
-            monitor.output.map(line => (
+            monitor.output.map((line) => (
               <div
                 key={line.id}
                 dangerouslySetInnerHTML={{ __html: line.html }}
@@ -135,8 +165,8 @@ class Content extends React.Component<IProps, {}> {
             ))}
         </pre>
       </div>
-    )
+    );
   }
 }
 
-export default Content
+export default Content;

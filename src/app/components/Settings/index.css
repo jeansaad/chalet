@@ -1,0 +1,20 @@
+.settings-config {
+  padding: 1rem;
+  color: black;
+  background: white;
+}
+
+.settings-config-items {
+  display: flex;
+  flex-direction: column;
+}
+
+.settings-config-item {
+  flex: 1;
+  margin: 8px;
+}
+
+.settings-config-footer-btn {
+  display: inline-block;
+  margin: 8px;
+}

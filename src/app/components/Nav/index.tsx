@@ -1,4 +1,4 @@
-import * as classNames from "classnames";
+import classNames from "classnames";
 import { observer } from "mobx-react";
 import KeyboardIcon from "@material-ui/icons/Keyboard";
 import * as React from "react";

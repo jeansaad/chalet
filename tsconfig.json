@@ -6,7 +6,7 @@
     "module": "commonjs",
     "jsx": "react",
     "strict": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
     // "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
   }
 }

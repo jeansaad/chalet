@@ -11,7 +11,14 @@ module.exports = {
       },
       {
         test: /\.tsx?$/,
-        use: "ts-loader",
+        use: [
+          {
+            loader: "ts-loader",
+            options: {
+              ignoreDiagnostics: [1110]
+            }
+          }
+        ],
         exclude: /node_modules/
       }
     ]

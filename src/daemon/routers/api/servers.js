@@ -21,5 +21,12 @@ module.exports = group => {
     (req, res) => res.end()
   );
 
+  router.put(
+    "/:id",
+    group.exists.bind(group),
+    group.updateEnv.bind(group),
+    (req, res) => res.end()
+  );
+
   return router;
 };

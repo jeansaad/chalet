@@ -9,10 +9,12 @@ const respawn = require("respawn");
 const afterAll = require("after-all");
 const httpProxy = require("http-proxy");
 const serverReady = require("server-ready");
+const isInteger = require("lodash.isinteger");
 const log = require("./log");
 const tcpProxy = require("./tcp-proxy");
 const daemonConf = require("../conf");
 const getCmd = require("../get-cmd");
+const { serversDir } = require("../common");
 
 module.exports = () => new Group();
 
@@ -76,6 +78,10 @@ class Group extends EventEmitter {
 
     const HTTP_PROXY = `http://127.0.0.1:${daemonConf.port}/proxy.pac`;
 
+    const originalEnv = {
+      ...conf.env
+    };
+
     conf.env = {
       ...process.env,
       ...conf.env
@@ -102,6 +108,9 @@ class Group extends EventEmitter {
       ...conf,
       maxRestarts: 0
     });
+
+    mon.data.originalEnv = originalEnv;
+    mon.data.id = id;
 
     this._list[id] = mon;
 
@@ -260,6 +269,26 @@ class Group extends EventEmitter {
       item.stop();
     }
 
+    next();
+  }
+
+  updateEnv(req, res, next) {
+    const { item } = req.chalet;
+    const conf = JSON.parse(
+      fs.readFileSync(`${serversDir}/${item.data.id}.json`, "utf8")
+    );
+    conf.env = req.body.env;
+    Object.keys(conf.env).forEach(key => {
+      if (isInteger(Number(conf.env[key]))) {
+        conf.env[key] = parseInt(conf.env[key], 10);
+      }
+    });
+
+    fs.writeFileSync(
+      `${serversDir}/${item.data.id}.json`,
+      JSON.stringify(conf, null, "  "),
+      "utf8"
+    );
     next();
   }
 
