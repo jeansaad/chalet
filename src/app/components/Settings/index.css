@@ -4,6 +4,42 @@
   background: white;
 }
 
+.settings-config-header {
+  display: flex;
+}
+
+.settings-config-header-label {
+  flex: 1;
+}
+
+.settings-config-header-actions {
+  position: relative;
+  flex: 1;
+  text-align: right;
+}
+
+.settings-config-header-actions-start {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+}
+
+.settings-config-header-actions-add {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+}
+
+.settings-config-header-actions-add-input {
+  height: 56px;
+  margin: 8px !important;
+}
+
+.settings-config-header-actions-add-button {
+  height: 56px;
+  margin: 8px !important;
+}
+
 .settings-config-items {
   display: flex;
   flex-direction: column;
@@ -12,6 +48,10 @@
 .settings-config-item {
   flex: 1;
   margin: 8px;
+}
+
+.settings-config-item-adornment {
+  cursor: pointer;
 }
 
 .settings-config-footer-btn {

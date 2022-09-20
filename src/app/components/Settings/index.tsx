@@ -4,7 +4,11 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import Fab from "@material-ui/core/Fab";
+import Zoom from "@material-ui/core/Zoom";
+import InputAdornment from "@material-ui/core/InputAdornment";
 
 import { IMonitor } from "../../Store";
 import * as api from "../../api";
@@ -31,10 +35,10 @@ const Settings: React.FC<IProps> = (props) => {
   };
 
   const add = async () => {
-    const newEnv = { 
+    const newEnv = {
       ...env,
-      [addLabel]: addValue
-    }
+      [addLabel]: addValue,
+    };
     setEnv(newEnv);
     toggleAdd();
   };
@@ -50,11 +54,11 @@ const Settings: React.FC<IProps> = (props) => {
   };
 
   const remove = (key: string) => {
-    if(env[key]){
+    if (env[key]) {
       const { [key]: oldKey, ...newEnv } = env;
       setEnv(newEnv);
     }
-  }
+  };
 
   const save = async () => {
     setIsSaving(true);
@@ -65,51 +69,59 @@ const Settings: React.FC<IProps> = (props) => {
 
   return (
     <div className="settings-config">
-      <div className="setting-config-header">
+      <div className="settings-config-header">
         <div className="settings-config-header-label">
-        <h1>Settings</h1>
-    </div>
+          <h1>Settings</h1>
+        </div>
         <div className="settings-config-header-actions">
-          {!isAdding && (
+          <Zoom in={!isAdding}>
             <Fab
+              className="settings-config-header-actions-start"
               color="primary"
               aria-label="add-setting"
               onClick={() => toggleAdd()}
             >
               <AddIcon />
             </Fab>
-          )}
-          {isAdding && (
+          </Zoom>
+          <Zoom in={isAdding}>
             <div className="settings-config-header-actions-add">
               <TextField
-                id="settings-config-header-actions-add-label"
+                className="settings-config-header-actions-add-input"
                 label="Setting Label"
                 value={addLabel}
                 variant="outlined"
                 onChange={(e) => setAddLabel(e.target.value)}
-                fullWidth
               />
               <TextField
-                id="settings-config-header-actions-add-value"
+                className="settings-config-header-actions-add-input"
                 label="Setting Value"
                 value={addValue}
                 variant="outlined"
                 onChange={(e) => setAddValue(e.target.value)}
-                fullWidth
               />
-              <Button color='primary' variant="contained" onClick={() => add()}>
-                Save Setting
+              <Button
+                className="settings-config-header-actions-add-button"
+                variant="contained"
+                color="primary"
+                onClick={() => add()}
+              >
+                <CheckCircleIcon />
               </Button>
-              <Button variant="contained" onClick={() => toggleAdd()}>
-                Cancel
+              <Button
+                className="settings-config-header-actions-add-button"
+                variant="contained"
+                onClick={() => toggleAdd()}
+              >
+                <HighlightOffIcon />
               </Button>
             </div>
-          )}
+          </Zoom>
         </div>
       </div>
       <div className="settings-config-items">
         {Object.keys(env).map((name) => (
-          <div className="settings-config-item">
+          <div key={name} className="settings-config-item">
             <TextField
               id={`settings-${name}`}
               label={name}
@@ -117,10 +129,19 @@ const Settings: React.FC<IProps> = (props) => {
               variant="outlined"
               onChange={(e) => onValueChange(name, e.target.value)}
               fullWidth
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment
+                    className="settings-config-item-adornment"
+                    aria-label="remove"
+                    position="end"
+                    onClick={() => remove(name)}
+                  >
+                    <DeleteIcon />
+                  </InputAdornment>
+                ),
+              }}
             />
-          <IconButton aria-label="delete" onClick={() => remove(name)}>
-            <DeleteIcon />
-          </IconButton>
           </div>
         ))}
       </div>

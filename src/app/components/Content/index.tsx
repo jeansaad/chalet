@@ -3,9 +3,9 @@ import * as React from "react";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import ClearAllIcon from "@material-ui/icons/ClearAll";
 import SettingsIcon from "@material-ui/icons/Settings";
+import Collapse from '@material-ui/core/Collapse';
 import Link from "../Link";
 import Settings from "../Settings";
-import AnimateHeight from "react-animate-height";
 
 import Store, { RUNNING } from "../../Store";
 import "./index.css";
@@ -148,13 +148,9 @@ class Content extends React.Component<IProps, IState> {
             </button>
           </span>
         </div>
-        <AnimateHeight
-          duration={500}
-          height={this.state.settingsOpen ? "auto" : 0}
-          id="settings"
-        >
+        <Collapse in={this.state.settingsOpen} >
           {monitor && <Settings monitor={monitor} onClose={() => this.toggleSettings()} />}
-        </AnimateHeight>
+        </Collapse>
         <pre>
           {monitor &&
             monitor.output.map((line) => (
