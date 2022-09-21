@@ -1,3 +1,13 @@
+.settings-config {
+  position: relative;
+}
+
+.settings-config-footer {
+  position: absolute;
+  top: 32px;
+  right: 0;
+}
+
 .settings-config-footer-btn {
   display: inline-block;
   margin: 8px;

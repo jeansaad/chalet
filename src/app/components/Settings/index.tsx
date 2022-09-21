@@ -1,6 +1,8 @@
 import * as React from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import SaveIcon from "@material-ui/icons/Save";
+import CancelIcon from "@material-ui/icons/Cancel";
 import { JsonEditor as Editor } from "jsoneditor-react";
 
 import { IMonitor } from "../../Store";
@@ -27,7 +29,6 @@ const Settings: React.FC<IProps> = (props) => {
     setIsSaving(true);
     await api.updateMonitor(monitor.id, { env });
     onClose();
-    setIsSaving(false);
   };
 
   return (
@@ -43,16 +44,18 @@ const Settings: React.FC<IProps> = (props) => {
       <div className="settings-config-footer">
         <div className="settings-config-footer-btn">
           <Button
+            size="small"
             variant="contained"
             color="primary"
             disabled={isSaving}
-            onClick={() => save()}
+            onClick={save}
+            startIcon={<SaveIcon />}
           >
             {isSaving ? "Saving..." : "Save"}
           </Button>
         </div>
         <div className="settings-config-footer-btn">
-          <Button variant="contained" onClick={() => props.onClose()}>
+          <Button size="small" variant="contained" onClick={props.onClose} startIcon={<CancelIcon />}>
             Cancel
           </Button>
         </div>
