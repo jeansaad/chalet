@@ -229,6 +229,17 @@ test.cb("POST /_/servers/:id/stop", t => {
     });
 });
 
+test.cb("PUT /_/servers/:id", t => {
+  request(app)
+    .put("/_/servers/node")
+    .send({ env: { SOME: "value" } })
+    .expect(200, err => {
+      if (err) return t.end(err);
+      t.not(app.group.find("node").status, "running");
+      t.end();
+    });
+});
+
 //
 // TEST daemon/routers/index.js
 //
