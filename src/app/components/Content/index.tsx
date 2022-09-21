@@ -3,7 +3,7 @@ import * as React from "react";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import ClearAllIcon from "@material-ui/icons/ClearAll";
 import SettingsIcon from "@material-ui/icons/Settings";
-import Collapse from '@material-ui/core/Collapse';
+import Collapse from "@material-ui/core/Collapse";
 import Link from "../Link";
 import Settings from "../Settings";
 
@@ -80,6 +80,11 @@ class Content extends React.Component<IProps, IState> {
   public componentWillUpdate() {
     if (this.el) {
       this.atBottom = this.isAtBottom();
+      if (this.state.settingsOpen) {
+        this.setState({
+          settingsOpen: false,
+        });
+      }
     }
   }
 
@@ -118,6 +123,7 @@ class Content extends React.Component<IProps, IState> {
   public render() {
     const { store } = this.props;
     const monitor = store.monitors.get(store.selectedMonitorId);
+
     return (
       <div
         className="content"
@@ -148,8 +154,10 @@ class Content extends React.Component<IProps, IState> {
             </button>
           </span>
         </div>
-        <Collapse in={this.state.settingsOpen} >
-          {monitor && <Settings monitor={monitor} onClose={() => this.toggleSettings()} />}
+        <Collapse in={this.state.settingsOpen} mountOnEnter unmountOnExit>
+          {monitor && (
+            <Settings monitor={monitor} onClose={() => this.toggleSettings()} />
+          )}
         </Collapse>
         <pre>
           {monitor &&

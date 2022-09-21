@@ -847,11 +847,6 @@ div.jsoneditor-outer.has-status-bar {
   padding-bottom: 26px;
 }
 
-div.jsoneditor-outer.has-main-menu-bar {
-  margin-top: -35px;
-  padding-top: 35px;
-}
-
 div.jsoneditor-busy {
   position: absolute;
   top: 15%;

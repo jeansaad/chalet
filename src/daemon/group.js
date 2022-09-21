@@ -109,7 +109,9 @@ class Group extends EventEmitter {
       maxRestarts: 0
     });
 
-    mon.data.originalEnv = originalEnv;
+    mon.data.originalEnv = {
+      ...originalEnv
+    };
     mon.data.id = id;
 
     this._list[id] = mon;
