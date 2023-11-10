@@ -99,6 +99,7 @@ chalet add 'python -m SimpleHTTPServer $PORT'           # static file server (Py
 chalet add 'php -S 127.0.0.1:$PORT'                     # PHP
 chalet add 'docker-compose up'                          # docker-compose
 chalet add 'python manage.py runserver 127.0.0.1:$PORT' # Django
+chalet add 'npm run dev -- --port $PORT'                # Vite Dev Server
 # ...
 ```
 
