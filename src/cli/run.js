@@ -1,9 +1,40 @@
 const cp = require("child_process");
-const getPort = require("get-port");
+const getNewPort = require("get-port");
+const http = require("http");
 const servers = require("./servers");
 const getCmd = require("../get-cmd");
+const daemonConf = require("../conf");
 
 const signals = ["SIGINT", "SIGTERM", "SIGHUP"];
+
+function getPort(id) {
+  return new Promise((resolve, reject) => {
+    const { host, port } = daemonConf;
+    const options = {
+      host,
+      port,
+      path: `/_/servers/${id}/port`,
+      method: "GET"
+    };
+    const req = http.request(options, res => {
+      let body = "";
+      req.on("error", reject);
+      res.on("data", function(chunk) {
+        body += chunk;
+      });
+      res.on("end", () => {
+        if (!res.complete) {
+          reject(
+            new Error("HTTP connection terminated before response complete")
+          );
+        }
+        resolve(body ? parseInt(body, 10) : getNewPort());
+      });
+    });
+    req.on("error", reject);
+    req.end();
+  });
+}
 
 module.exports = {
   // For testing purpose, allows stubbing cp.spawnSync
@@ -26,7 +57,7 @@ module.exports = {
       const serverAddress = `http://localhost:${port}`;
 
       process.env.PORT = port;
-      servers.add(serverAddress, opts);
+      servers.add(serverAddress, { ...opts, port });
 
       signals.forEach(signal => process.on(signal, cleanAndExit));
 
@@ -43,7 +74,7 @@ module.exports = {
     if (opts.port) {
       startServer(opts.port);
     } else {
-      getPort()
+      getPort(servers.getId(opts))
         .then(startServer)
         .catch(err => {
           throw err;

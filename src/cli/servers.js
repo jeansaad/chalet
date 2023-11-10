@@ -10,7 +10,8 @@ const serversDir = common.serversDir;
 module.exports = {
   add,
   rm,
-  ls
+  ls,
+  getId
 };
 
 function isUrl(str) {
@@ -29,7 +30,9 @@ function domainify(str) {
   );
 }
 
-function getId(cwd) {
+function getId(opts, cwd) {
+  if (opts.name) return domainify(opts.name);
+  if (!cwd) cwd = process.cwd();
   return domainify(path.basename(cwd));
 }
 
@@ -41,7 +44,7 @@ function add(param, opts = {}) {
   mkdirp.sync(serversDir);
 
   const cwd = opts.dir || process.cwd();
-  const id = opts.name ? domainify(opts.name) : getId(cwd);
+  const id = getId(opts, cwd);
   const force = opts.force;
 
   const file = getServerFile(id);
@@ -97,11 +100,12 @@ function add(param, opts = {}) {
         }
       });
     }
+  }
 
-    // Copy port option
-    if (opts.port) {
-      conf.env.PORT = opts.port;
-    }
+  // Copy port option
+  if (opts.port) {
+    if (!conf.env) conf.env = {};
+    conf.env.PORT = opts.port;
   }
 
   const data = JSON.stringify(conf, null, 2);
@@ -126,8 +130,7 @@ function add(param, opts = {}) {
 }
 
 function rm(opts = {}) {
-  const cwd = process.cwd();
-  const id = opts.n || getId(cwd);
+  const id = getId(opts);
   const file = getServerFile(id);
 
   console.log(`Remove  ${tildify(file)}`);
