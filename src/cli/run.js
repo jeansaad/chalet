@@ -31,10 +31,11 @@ module.exports = {
       signals.forEach(signal => process.on(signal, cleanAndExit));
 
       const [command, ...args] = getCmd(cmd);
-      const { status, error } = this._spawnSync(command, args, {
-        stdio: "inherit",
-        cwd: process.cwd()
-      });
+      const { status, error } =
+        this._spawnSync(command, args, {
+          stdio: "inherit",
+          cwd: process.cwd()
+        }) || {};
 
       if (error) throw error;
       cleanAndExit(status);
