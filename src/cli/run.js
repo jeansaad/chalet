@@ -26,7 +26,7 @@ module.exports = {
       const serverAddress = `http://localhost:${port}`;
 
       process.env.PORT = port;
-      servers.add(serverAddress, opts);
+      if (!servers.add(serverAddress, opts)) process.exit(1);
 
       signals.forEach(signal => process.on(signal, cleanAndExit));
 

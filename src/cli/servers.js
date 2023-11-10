@@ -110,7 +110,7 @@ function add(param, opts = {}) {
   fs.writeFileSync(file, data);
 
   // if we're mapping a domain to a URL there's no additional info to output
-  if (conf.target) return;
+  if (conf.target) return conf;
 
   // if we're mapping a domain to a local server add some info
   if (conf.out) {
@@ -123,6 +123,8 @@ function add(param, opts = {}) {
   if (!opts.p) {
     console.log("Port Random port (use '-p 1337' to set a fixed port)");
   }
+
+  return conf;
 }
 
 function rm(opts = {}) {
